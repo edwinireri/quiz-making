@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>quiz.com</title>
+<style>
+  /* Add CSS styles for better presentation */
+  body {
+    font-family: Arial, sans-serif;
+    background-image: url(/omega.jpg);
+  }
+  #quiz-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  #question {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .choice-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: teal;
+  }
+  .choice-button:hover {
+    background-color: #f0f0f0;
+  }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+  <h2>Greek Alphabet quiz</h2>
+  <div id="question"></div>
+  <div id="choices"></div>
+  <div id="feedback"></div>
+  <div id="score"></div>
+</div>
+
+
+<!-- GREEK ALPHABETS
+
+Alpha - α   Beta - β   Gamma - γ   Delta - Δ   Epsilon - ε   
+Zeta - ζ   Eta - η   Theta - θ   Iota - ι   Kappa - κ
+Lambda - λ   Mu - μ   Nu - ν   Xi - Ξ   Omicron - ο   
+Pi - π   Rho - ρ   Sigma - Σ   Tau - τ   Upsilon - υ   
+Phi - φ   Chi - χ   Psi - ψ   Omega - Ω -->
+<script>
+  const quizData = [
+    {
+      question: "ALPHA ?",
+      choices: ["α", "θ", "Ξ", "Ω"],
+      correctAnswer: "α"
+    },
+    {
+      question: "BETA ?",
+      choices: ["γ", "ι", "Ω", "β"],
+      correctAnswer: "β"
+    },
+    {
+      question: "GAMMA ?",
+      choices: ["Ξ", "θ", "γ", "Ω"],
+      correctAnswer: "γ"
+    },
+    {
+      question: "DELTA ?",
+      choices: ["Δ", "θ", "Ξ", "Ω"],
+      correctAnswer: "Δ"
+    },
+    {
+      question: "EPSILON ?",
+      choices: ["α", "θ", "Ξ", "ε"],
+      correctAnswer: "ε"
+    },
+    {
+      question: "ZETA ?",
+      choices: ["ψ", "θ", "ζ", "Ω"],
+      correctAnswer: "ζ"
+    },
+    {
+      question: "ETA ?",
+      choices: ["η", "θ", "Ξ", "Ω"],
+      correctAnswer: "η"
+    },
+    {
+      question: "THETA ?",
+      choices: ["π", "θ", "Ξ", "Ω"],
+      correctAnswer: "θ"
+    },
+    {
+      question: "IOTA ?",
+      choices: ["α", "θ", "Ξ", "ι"],
+      correctAnswer: "ι"
+    },
+    {
+      question: "KAPPA ?",
+      choices: ["α", "κ", "Ξ", "Ω"],
+      correctAnswer: "κ"
+    },
+    // {
+    //   question: "LAMBDA ?",
+    //   choices: ["λ", "θ", "Ξ", "Ω"],
+    //   correctAnswer: "λ"
+    // },
+    // {
+    //   question: "MU ?",
+    //   choices: ["μ", "θ", "Ξ", "Ω"],
+    //   correctAnswer: "μ"
+    // },
+    // {
+    //   question: "NU ?",
+    //   choices: ["α", "θ", "Ξ", "ν"],
+    //   correctAnswer: "ν"
+    // },
+    // {
+    //   question: "XI ?",
+    //   choices: ["φ", "θ", "Ξ", "Ω"],
+    //   correctAnswer: "Ξ"
+    // },
+    // {
+    //   question: "OMICRON ?",
+    //   choices: ["Ω", "φ", "Ξ", "ο"],
+    //   correctAnswer: "ο"
+    // },
+    // {
+    //   question: "PI ?",
+    //   choices: ["φ", "π", "Ξ", "Ω"],
+    //   correctAnswer: "π"
+    // },
+    // {
+    //   question: "RHO ?",
+    //   choices: ["α", "θ", "Ξ", "ρ"],
+    //   correctAnswer: "ρ"
+    // },
+    // {
+    //   question: "SIGMA ?",
+    //   choices: ["Σ", "θ", "Ξ", "Ω"],
+    //   correctAnswer: "Σ"
+    // },
+    // {
+    //   question: "TAU ?",
+    //   choices: ["α", "τ", "Ξ", "Ω"],
+    //   correctAnswer: "τ"
+    // },
+    // {
+    //   question: "UPSILON ?",
+    //   choices: ["α", "θ", "υ", "Ω"],
+    //   correctAnswer: "υ"
+    // },
+    // {
+    //   question: "PHI ?",
+    //   choices: ["Ξ", "θ", "φ", "Ω"],
+    //   correctAnswer: "φ"
+    // },
+    // {
+    //   question: "CHI ?",
+    //   choices: ["χ", "θ", "Ξ", "Ω"],
+    //   correctAnswer: "χ"
+    // },
+    // {
+    //   question: "PSI ?",
+    //   choices: ["α", "θ", "Ξ", "ψ"],
+    //   correctAnswer: "ψ"
+    // },
+    // {
+    //   question: "OMEGA ?",
+    //   choices: ["ψ", "θ", "Ξ", "Ω"],
+    //   correctAnswer: "Ω"
+    // },
+    // Add more questions as needed
+  ];
+
+  let currentQuestionIndex = 0;
+  let score = 0;
+  let correctAnswers = 0;
+  let incorrectAnswers = 0;
+
+  const questionElement = document.getElementById("question");
+  const choicesElement = document.getElementById("choices");
+  const feedbackElement = document.getElementById("feedback");
+  const scoreElement = document.getElementById("score");
+
+  function showQuestion() {
+    const currentQuestion = quizData[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    choicesElement.innerHTML = ""; // Clear previous choices
+
+    currentQuestion.choices.forEach(choice => {
+      const choiceButton = document.createElement("button");
+      choiceButton.textContent = choice;
+      choiceButton.className = "choice-button";
+      choiceButton.onclick = () => checkAnswer(choice);
+      choicesElement.appendChild(choiceButton);
+    });
+  }
+
+  function checkAnswer(selectedAnswer) {
+    const currentQuestion = quizData[currentQuestionIndex];
+    if (selectedAnswer === currentQuestion.correctAnswer) {
+      feedbackElement.textContent = "Correct!";
+      score++;
+      correctAnswers++;
+    } else {
+      feedbackElement.textContent = "Incorrect. The correct answer is: " + currentQuestion.correctAnswer;
+      incorrectAnswers++;
+    }
+    // Move to the next question or end quiz if it's the last question
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizData.length) {
+      setTimeout(() => {
+        feedbackElement.textContent = "";
+        showQuestion();
+      }, 1000); // Wait 1 second before showing the next question
+    } else {
+      endQuiz();
+    }
+  }
+
+  function endQuiz() {
+    questionElement.textContent = "Quiz Completed!";
+    choicesElement.innerHTML = ""; // Clear choices
+    feedbackElement.textContent = ""; // Clear feedback
+    scoreElement.textContent = `Score:  ${score} / ${quizData.length}`; 
+    scoreElement.textContent += `Correct Answers: ${correctAnswers}`; 
+    scoreElement.textContent += `Incorrect Answers: ${incorrectAnswers}`; 
+
+  }
+
+  // Start the quiz
+  showQuestion();
+
+ 
+</script>
+ 
+</body>
+</html>

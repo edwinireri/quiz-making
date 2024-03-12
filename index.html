@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Quiz Application</title>
+<style>
+  /* Add CSS styles for better presentation */
+  body {
+    font-family: Arial, sans-serif;
+  }
+  #quiz-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  #question {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .choice-button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  .choice-button:hover {
+    background-color: #f0f0f0;
+  }
+</style>
+</head>
+<body>
+
+<div id="quiz-container">
+  <h2>Simple Quiz</h2>
+  <div id="question"></div>
+  <div id="choices"></div>
+  <div id="feedback"></div>
+</div>
+
+<script>
+  const quizData = [
+    {
+      question: "What is the capital of France?",
+      choices: ["Paris", "London", "Berlin", "Madrid"],
+      correctAnswer: "Paris"
+    },
+    {
+      question: "Which planet is known as the Red Planet?",
+      choices: ["Mars", "Venus", "Jupiter", "Saturn"],
+      correctAnswer: "Mars"
+    }
+    // Add more questions as needed
+  ];
+
+  let currentQuestionIndex = 0;
+  const questionElement = document.getElementById("question");
+  const choicesElement = document.getElementById("choices");
+  const feedbackElement = document.getElementById("feedback");
+
+  function showQuestion() {
+    const currentQuestion = quizData[currentQuestionIndex];
+    questionElement.textContent = currentQuestion.question;
+    choicesElement.innerHTML = ""; // Clear previous choices
+
+    currentQuestion.choices.forEach(choice => {
+      const choiceButton = document.createElement("button");
+      choiceButton.textContent = choice;
+      choiceButton.className = "choice-button";
+      choiceButton.onclick = () => checkAnswer(choice);
+      choicesElement.appendChild(choiceButton);
+    });
+  }
+
+  function checkAnswer(selectedAnswer) {
+    const currentQuestion = quizData[currentQuestionIndex];
+    if (selectedAnswer === currentQuestion.correctAnswer) {
+      feedbackElement.textContent = "Correct!";
+    } else {
+      feedbackElement.textContent = "Incorrect. The correct answer is: " + currentQuestion.correctAnswer;
+    }
+    // Move to the next question or end quiz if it's the last question
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizData.length) {
+      setTimeout(() => {
+        feedbackElement.textContent = "";
+        showQuestion();
+      }, 1000); // Wait 1 second before showing the next question
+    } else {
+      endQuiz();
+    }
+  }
+
+  function endQuiz() {
+    questionElement.textContent = "Quiz Completed!";
+    choicesElement.innerHTML = ""; // Clear choices
+  }
+
+  // Start the quiz
+  showQuestion();
+
+</script>
+
+</body>
+</html>
